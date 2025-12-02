@@ -1,0 +1,119 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Rails Test - All",
+      "type": "shell",
+      "command": "bundle exec rails test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "owner": "ruby",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^\\s+#\\s+(.*?):(\\d+)$",
+          "file": 1,
+          "line": 2
+        }
+      }
+    },
+    {
+      "label": "Rails Test - Current File",
+      "type": "shell",
+      "command": "bundle exec rails test ${relativeFile}",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "owner": "ruby",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^\\s+#\\s+(.*?):(\\d+)$",
+          "file": 1,
+          "line": 2
+        }
+      }
+    },
+    {
+      "label": "Rails Test - Models",
+      "type": "shell",
+      "command": "bundle exec rails test test/models",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "Rails Test - Controllers",
+      "type": "shell",
+      "command": "bundle exec rails test test/controllers",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "Rails Test - System",
+      "type": "shell",
+      "command": "bundle exec rails test:system",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "Start Webpack Dev Server",
+      "type": "shell",
+      "command": "./bin/webpacker-dev-server",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^([^\\s].*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*webpack.*",
+          "endsPattern": ".*Compiled successfully.*|.*Failed to compile.*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "development"
+      }
+    },
+    {
+      "label": "Start Sidekiq",
+      "type": "shell",
+      "command": "bundle exec sidekiq",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "development"
+      }
+    }
+  ]
+}

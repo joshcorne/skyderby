@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Rails Server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bundle exec rails server -p 3000",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Rails Console",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bundle exec rails console",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Rails + Webpack (Full Stack)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bundle exec rails server -p 3000",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Start Webpack Dev Server"
+    }
+  ]
+}
