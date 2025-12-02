@@ -1,0 +1,72 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: skyderby_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  web:
+    build: .
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/skyderby_production
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-development_secret_key_base_minimum_length_required_is_64_characters_long}
+      RAILS_ENV: production
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
+      # Override with actual values in production
+      DB_NAME: skyderby_production
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+      MAPS_API_KEY: ${MAPS_API_KEY:-AIzaSyBK52NrEXWYjmGLRkKOpjndjDxuT4PuB8U}
+      TRACK_SCANNER_URL: ${TRACK_SCANNER_URL:-http://track-scanner.herokuapp.com}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./storage:/app/storage
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/skyderby_production
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-development_secret_key_base_minimum_length_required_is_64_characters_long}
+      RAILS_ENV: production
+      DB_NAME: skyderby_production
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+    depends_on:
+      - db
+      - redis
+      - web
+
+volumes:
+  postgres_data:
+  redis_data:
